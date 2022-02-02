@@ -17,6 +17,9 @@ RUN         mkdir -p /data/db
 
 # 2. Negotiation Engine dependencies
 # -----------------------------------------------------------------------------
+# Use Node v16
+RUN         curl -fsSL https://deb.nodesource.com/setup_16.x | bash -
+
 WORKDIR     /ne
 RUN         apt-get install -y python3 python3-pip
 ARG         requirements="./NegotiationEngine/API PILOT 1/requirements.txt"
@@ -26,7 +29,7 @@ RUN         pip3 install -r requirements.txt
 # 3. Digiprime dependencies
 # -----------------------------------------------------------------------------
 WORKDIR     /digiprime
-RUN         apt-get install -y nodejs npm
+RUN         apt-get install -y nodejs
 COPY        ./Digiprime/package.json .
 COPY        ./Digiprime/package-lock.json .
 RUN         npm install
@@ -43,7 +46,13 @@ WORKDIR     /digiprime
 COPY        ./Digiprime .
 EXPOSE      3000
 
-# 6. Setting up environment required environment variables.
+# 6. Utility to create contracts
+# -----------------------------------------------------------------------------
+WORKDIR     /util
+COPY        ./util .
+RUN         npm install
+
+# 7. Setting up environment required environment variables.
 # -----------------------------------------------------------------------------
 # Digiprime
 ENV         DB_URL="mongodb://localhost:27017/offer-test"
@@ -57,7 +66,7 @@ ENV         MAPBOX_TOKEN=""
 # Negotiation Engine
 ENV         DATABASE_URL="mongodb://localhost:27017/"
 
-# 7. Copy & Run start script
+# 8. Copy & Run start script
 # -----------------------------------------------------------------------------
 WORKDIR     /
 COPY        ./run.sh .

@@ -1,0 +1,13 @@
+{
+  "name": "digiprime-util",
+  "version": "1.0.0",
+  "description": "Utility to create a default contract in NE",
+  "scripts": {
+    "create_contract": "node create_contract.js"
+  },
+  "author": "norlen",
+  "license": "MIT",
+  "dependencies": {
+    "mongodb": "^4.3.1"
+  }
+}

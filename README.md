@@ -2,7 +2,13 @@ Builds a container containing Digiprime, Negotiation Engine, and MongoDB as the 
 
 ## Build
 
-To build the Docker container run:
+Get the source by running
+
+```bash
+git clone --recurse-submodules https://github.com/norlen/digiprime-container
+```
+
+To build the Docker container run
 
 ```bash
 docker build . -t digiprime
@@ -10,7 +16,7 @@ docker build . -t digiprime
 
 ## Run
 
-To start the container run after building:
+To start the container run after building
 
 ```bash
 docker run -p 80:3000 --env MAPBOX_TOKEN=<your token> digiprime
