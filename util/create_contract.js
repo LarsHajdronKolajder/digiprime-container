@@ -3,7 +3,7 @@ const { MongoClient } = require("mongodb");
 const contractData = {
   temp_type: "article",
   template:
-    "Hereby I $buyer, declare the purchase of $quantity units of $item for the ammount of $ammount SEK on $date from $owner. \nBuyer signature $buyersign \nSeller signature $sellersign",
+    "Hereby I $buyer, declare the purchase of $quantity units of $item for the amount of $ammount SEK on $date from $owner. \nBuyer signature $buyersign \nSeller signature $sellersign",
 };
 
 const databaseUrl = process.env.DATABASE_URL;
