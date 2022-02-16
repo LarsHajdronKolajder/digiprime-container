@@ -16,4 +16,15 @@ nohup python3 -m flask run --host=0.0.0.0 &
 # Start Digiprime
 echo "Starting Digiprime..."
 cd /digiprime
-NODE_ENV="production" node app.js
+nohup node app.js &
+
+# Start Caddy
+cd /caddy
+if [ "$USE_TSL" == "true" ]
+then
+    echo "Starting Caddy with HTTPS..."
+    caddy reverse-proxy --from ${SITE_ADDRESS} --to 127.0.0.1:3000
+else
+    echo "Starting Caddy without HTTPS..."
+    caddy run --config ./Caddyfile_no_tls
+fi
