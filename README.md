@@ -10,11 +10,9 @@ cd digiprime-container
 docker build . -t digiprime     # Build container
 ```
 
-The container exposes ports `80`, `443` and `3000`. Port `3000` is only available for development and should never be mapped for production deployments.
-
 ## Run
 
-To run in production mode do not set `NODE_ENV` and set the other required parameters.
+To run in production mode with HTTPS run
 
 ```bash
 docker run -p 80:80 -p 443:443 \
@@ -28,20 +26,23 @@ docker run -p 80:80 -p 443:443 \
   digiprime
 ```
 
-To run a development server without HTTPS this can be used instead, note that the `CLOUDINARY_` variables aren't present. You should add these if you need image uploading. This will disabled automatic HTTPS in Caddy, the site address have to be present to prevent it. `NODE_ENV` set to `development` enables stack traces. `MAPBOX_TOKEN` is however necessary for the Digiprime website to work at all.
+This will start a production server with automatic HTTPS on your `SITE_ADDRESS`, with automatic redirects to port `443`. To instead run in development mode without HTTPS run
 
 ```bash
-docker run -p 80:80 -p 443:443 \
+docker run -p 3000:3000 \
   --env MAPBOX_TOKEN=<your token> \
+  --env CLOUDINARY_CLOUD_NAME=<your info> \
+  --env CLOUDINARY_KEY=<your info> \
+  --env CLOUDINARY_SECRET=<your info> \
+  --env CLOUDINARY_HOST_URL=<your info> \
   --env NODE_ENV="development" \
   --env USE_TLS="false" \
-  --env SITE_ADDRESS="localhost:80" \
   digiprime
 ```
 
-However, this does not allow users to upload any images related to the offers. For this `CLOUDINARY_CLOUD_NAME`, `CLOUDINARY_KEY`, `CLOUDINARY_SECRET`, and `CLOUDINARY_HOST_URL` must be passed as well.
+Which will starts the server on [`http://localhost:3000`](http://localhost:3000). For development if you do not care about image upload and handling that the `CLOUINARY_` variables can be left, however that functionality will not work then. `NODE_ENV` set to `development` enables error stack traces.
 
-If you are having trouble with redirects, or just want bypass Caddy and call Digiprime directly map port `3000` as well with `-p 3000:3000` and it should work as usual.
+The container exposes ports `80`, `443` and `3000`. If `USE_TLS` is set to `true` you should only map port `80` and `443`, and if `USE_TLS` is `false` only map port `3000`. Note that Negotiation Engine and Mongo DB ports are not exposed at all.
 
 ### Environment variables
 
@@ -56,8 +57,8 @@ If you are having trouble with redirects, or just want bypass Caddy and call Dig
 
 Configurable values depending on development/production deployment:
 
-- `SITE_ADDRESS`: Defaults to `localhost`. The hostname where the server is hosted, for development in HTTP set to `localhost:80` together with `USE_TLS="false"`.
-- `USE_TLS`: Defaults to `true`, set to `false` to disable automatic HTTPS. `SITE_ADDRESS` should also be set to something non https, e.g. `:80` or `http://`, see Caddy docs for more details. If this is enabled it also enables secure cookies in Digiprime.
+- `SITE_ADDRESS`: Defaults to `localhost`. The hostname where the server is hosted only needs to be set when `USE_TLS="true"`.
+- `USE_TLS`: Defaults to `true`, set to `false` to disable automatic HTTPS, see [HTTPS](#HTTPS) for more details.
 - `NODE_ENV`: defaults to `production`, can optionally be set to `development` to display debug information such as stack traces.
 
 Optional environment variables which should be left alone:
@@ -68,11 +69,9 @@ Optional environment variables which should be left alone:
 
 ### HTTPS
 
-With `USE_TLS="true"` (default) Digiprime will be served over HTTPS using Caddy's [Automatic HTTPS](https://caddyserver.com/docs/automatic-https). Note that if you do not have the Caddy certificate installed it will show a TLS error.
+With `USE_TLS` set to `true` (default) Digiprime will be served over HTTPS using Caddy's [Automatic HTTPS](https://caddyserver.com/docs/automatic-https). Note that if you do not have the Caddy certificate installed it will show a TLS error.
 
-For use in production see the documentation for proper setup.
-
-Note that if you allowed HTTPS at first and then disable it the redirect may be cached and it will try to redirect you to the HTTPS page (which will fail). So clear the browser cache for the browser to remove it (the browser will cache the 301 even in incognito).
+For use in production see the [documentation](https://caddyserver.com/docs/automatic-https) for proper setup.
 
 ### Persisting data
 

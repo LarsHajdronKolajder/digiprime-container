@@ -13,18 +13,20 @@ echo "Starting Negotiation Engine..."
 cd /ne
 nohup python3 -m flask run --host=0.0.0.0 &
 
-# Start Digiprime
-echo "Starting Digiprime..."
-cd /digiprime
-nohup node app.js &
-
-# Start Caddy
-cd /caddy
 if [ "${USE_TLS}" == "true" ]
 then
+    # Start Digiprime
+    echo "Starting Digiprime..."
+    cd /digiprime
+    nohup node app.js &
+
+    # Start Caddy
+    cd /caddy
     echo "Starting Caddy with HTTPS..."
     caddy reverse-proxy --from ${SITE_ADDRESS} --to 127.0.0.1:3000
 else
-    echo "Starting Caddy without HTTPS..."
-    caddy run --config ./Caddyfile_no_tls --environ
+    # Start Digiprime
+    echo "Starting Digiprime..."
+    cd /digiprime
+    node app.js
 fi
