@@ -37,24 +37,27 @@ docker run -p 80:80 -p 443:443 \
   digiprime
 ```
 
-However, this does now allow users to upload any images related to the offers. For this `CLOUDINARY_CLOUD_NAME`, `CLOUDINARY_KEY`, `CLOUDINARY_SECRET`, and `CLOUDINARY_HOST_URL` must be passed as well.
+However, this does not allow users to upload any images related to the offers. For this `CLOUDINARY_CLOUD_NAME`, `CLOUDINARY_KEY`, `CLOUDINARY_SECRET`, and `CLOUDINARY_HOST_URL` must be passed as well.
 
 ### Environment variables
 
 **Required** environment variables:
 
-- `MAPBOX_TOKEN`: [Mapbox](https://www.mapbox.com/) API key (**required**).
-- `SECRET`: Key to encrypt cookies. Default value is `thisshouldbeabettersecret` so this should be set to another value for the server to be secure. The way it is set up is that it accepts a comma separated list of secrets, where the first one is used to sign new cookies. This allows for rolling updates of secrets, example `new,old`. See [express-session](https://www.npmjs.com/package/express-session) for more information (**required**).
-- `CLOUDINARY_CLOUD_NAME`: [Cloudinary](https://cloudinary.com/) cloud name (**required**).
-- `CLOUDINARY_KEY`: [Cloudinary](https://cloudinary.com/) API key (**required**).
-- `CLOUDINARY_SECRET`: [Cloudinary](https://cloudinary.com/) secret (**required**).
-- `CLOUDINARY_HOST_URL`: first part of the URL to all cloudinary assets, example: `https://res.cloudinary.com/diq0t2bqj/` (**required**).
-- `SITE_ADDRESS`: Defaults to `localhost`. The hostname where the server is hosted, for development in HTTP set to `localhost:80` together with `USE_TLS="false"` (**required** for HTTPS).
-- `USE_TLS`: Defaults to `false`, set to `true` to enable HTTPS. If this is enabled it also enables secure cookies in Digiprime.
+- `MAPBOX_TOKEN`: [Mapbox](https://www.mapbox.com/) API key.
+- `SECRET`: Key to encrypt cookies. Default value is `thisshouldbeabettersecret` so this should be set to another value for the server to be secure. The way it is set up is that it accepts a comma separated list of secrets, where the first one is used to sign new cookies. This allows for rolling updates of secrets, example `new,old`. See [express-session](https://www.npmjs.com/package/express-session) for more information.
+- `CLOUDINARY_CLOUD_NAME`: [Cloudinary](https://cloudinary.com/) cloud name.
+- `CLOUDINARY_KEY`: [Cloudinary](https://cloudinary.com/) API key.
+- `CLOUDINARY_SECRET`: [Cloudinary](https://cloudinary.com/) secret.
+- `CLOUDINARY_HOST_URL`: first part of the URL to all cloudinary assets, example: `https://res.cloudinary.com/diq0t2bqj/`.
+
+Configurable values depending on developent/production deployment
+
+- `SITE_ADDRESS`: Defaults to `localhost`. The hostname where the server is hosted, for development in HTTP set to `localhost:80` together with `USE_TLS="false"`.
+- `USE_TLS`: Defaults to `true`, set to `false` to disable automatic HTTPS. `SITE_ADDRESS` should also be set to something non https, e.g. `:80` or `http://`, see Caddy docs for more details. If this is enabled it also enables secure cookies in Digiprime.
+- `NODE_ENV`: defaults to `production`, can optionally be set to `development` to display debug information such as stack traces.
 
 Optional environment variables which should be left alone:
 
-- `NODE_ENV`: defaults to `production`, can optionally be set to `development` to display debug information such as stack traces.
 - `DB_URL`: Database URL for Digiprime, can be set to use another database.
 - `PORT`: Port to launch Digiprime. However, the image only exposes port `3000` so leave this alone.
 - `DATABASE_URL`: Database URL for Negotiation Engine, can be set to use another database.
