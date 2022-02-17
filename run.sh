@@ -21,7 +21,7 @@ then
     nohup node app.js &
 
     # Start Caddy
-    cd /caddy
+    cd /
     echo "Starting Caddy with HTTPS..."
     caddy reverse-proxy --from ${SITE_ADDRESS} --to 127.0.0.1:3000
 else

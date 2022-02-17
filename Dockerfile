@@ -64,9 +64,6 @@ RUN         npm install
 
 # 8. Setup caddy
 # -----------------------------------------------------------------------------
-WORKDIR     /caddy
-COPY        ./Caddyfile_no_tls .
-
 # Expose Caddy
 EXPOSE      80
 EXPOSE      443
