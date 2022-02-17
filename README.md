@@ -10,6 +10,8 @@ cd digiprime-container
 docker build . -t digiprime     # Build container
 ```
 
+The container exposes ports `80`, `443` and `3000`. Port `3000` is only available for development and should never be mapped for production deployments.
+
 ## Run
 
 To run in production mode do not set `NODE_ENV` and set the other required parameters.
@@ -39,6 +41,8 @@ docker run -p 80:80 -p 443:443 \
 
 However, this does not allow users to upload any images related to the offers. For this `CLOUDINARY_CLOUD_NAME`, `CLOUDINARY_KEY`, `CLOUDINARY_SECRET`, and `CLOUDINARY_HOST_URL` must be passed as well.
 
+If you are having trouble with redirects, or just want bypass Caddy and call Digiprime directly map port `3000` as well with `-p 3000:3000` and it should work as usual.
+
 ### Environment variables
 
 **Required** environment variables:
@@ -67,6 +71,8 @@ Optional environment variables which should be left alone:
 With `USE_TLS="true"` (default) Digiprime will be served over HTTPS using Caddy's [Automatic HTTPS](https://caddyserver.com/docs/automatic-https). Note that if you do not have the Caddy certificate installed it will show a TLS error.
 
 For use in production see the documentation for proper setup.
+
+Note that if you allowed HTTPS at first and then disable it the redirect may be cached and it will try to redirect you to the HTTPS page (which will fail). So clear the browser cache for the browser to remove it (the browser will cache the 301 even in incognito).
 
 ### Persisting data
 

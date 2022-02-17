@@ -20,11 +20,11 @@ nohup node app.js &
 
 # Start Caddy
 cd /caddy
-if [ "$USE_TSL" == "true" ]
+if [ "${USE_TLS}" == "true" ]
 then
     echo "Starting Caddy with HTTPS..."
     caddy reverse-proxy --from ${SITE_ADDRESS} --to 127.0.0.1:3000
 else
     echo "Starting Caddy without HTTPS..."
-    caddy run --config ./Caddyfile_no_tls
+    caddy run --config ./Caddyfile_no_tls --environ
 fi
