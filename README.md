@@ -50,7 +50,7 @@ However, this does not allow users to upload any images related to the offers. F
 - `CLOUDINARY_SECRET`: [Cloudinary](https://cloudinary.com/) secret.
 - `CLOUDINARY_HOST_URL`: first part of the URL to all cloudinary assets, example: `https://res.cloudinary.com/diq0t2bqj/`.
 
-Configurable values depending on developent/production deployment
+Configurable values depending on development/production deployment:
 
 - `SITE_ADDRESS`: Defaults to `localhost`. The hostname where the server is hosted, for development in HTTP set to `localhost:80` together with `USE_TLS="false"`.
 - `USE_TLS`: Defaults to `true`, set to `false` to disable automatic HTTPS. `SITE_ADDRESS` should also be set to something non https, e.g. `:80` or `http://`, see Caddy docs for more details. If this is enabled it also enables secure cookies in Digiprime.
