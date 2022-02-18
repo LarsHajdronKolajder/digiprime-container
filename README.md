@@ -1,5 +1,7 @@
 Builds a container containing [Digiprime](https://github.com/norlen/Digiprime) and [Negotiation Engine](https://github.com/norlen/NegotiationEngine). In addition, it also starts a [MongoDB](https://www.mongodb.com/) server that both application use. It also uses [Caddy](https://caddyserver.com/) as a reverse proxy in front of Digiprime.
 
+An already built up to date build exists on [Docker Hub](https://hub.docker.com/r/norlen/digiprime). To run this replace use `norlen/digiprime:latest` instead of `digiprime` in the run commands.
+
 ## Build
 
 Get the source by running, the submodules **must** be cloned as well for the build to be valid.
