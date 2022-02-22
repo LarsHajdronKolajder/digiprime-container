@@ -1,10 +1,10 @@
 Builds a container containing [Digiprime](https://github.com/norlen/Digiprime) and [Negotiation Engine](https://github.com/norlen/NegotiationEngine). In addition, it also starts a [MongoDB](https://www.mongodb.com/) server that both application use. It also uses [Caddy](https://caddyserver.com/) as a reverse proxy in front of Digiprime.
 
-An already built up to date build exists on [Docker Hub](https://hub.docker.com/r/norlen/digiprime). To run this replace use `norlen/digiprime:latest` instead of `digiprime` in the run commands.
+An automated build of the container exists on [Docker Hub](https://hub.docker.com/r/norlen/digiprime). To use this replace `digiprime` with `norlen/digiprime:latest` in the commands below.
 
 ## Build
 
-Get the source by running, the submodules **must** be cloned as well for the build to be valid.
+Get the source, the submodules **must** be cloned as well for the build to be valid.
 
 ```bash
 git clone --recurse-submodules https://github.com/norlen/digiprime-container
@@ -14,7 +14,7 @@ docker build . -t digiprime     # Build container
 
 ## Run
 
-To run in production mode with HTTPS run
+To run in production mode with HTTPS
 
 ```bash
 docker run -p 80:80 -p 443:443 \
@@ -28,7 +28,9 @@ docker run -p 80:80 -p 443:443 \
   digiprime
 ```
 
-This will start a production server with automatic HTTPS on your `SITE_ADDRESS`, with automatic redirects to port `443`. To instead run in development mode without HTTPS run
+This will start a production server with automatic HTTPS on your `SITE_ADDRESS`, with automatic redirects to port `443`.
+
+To instead run in development mode without HTTPS
 
 ```bash
 docker run -p 3000:3000 \
@@ -42,7 +44,7 @@ docker run -p 3000:3000 \
   digiprime
 ```
 
-Which will starts the server on [`http://localhost:3000`](http://localhost:3000). For development if you do not care about image upload and handling that the `CLOUINARY_` variables can be left, however that functionality will not work then. `NODE_ENV` set to `development` enables error stack traces.
+This starts the Digiprime server on [`http://localhost:3000`](http://localhost:3000). If using user supplied images are not of interest, the `CLOUDINARY_*` environment variables can be unset. `NODE_ENV` set to `development` enables stack traces on error pages.
 
 The container exposes ports `80`, `443` and `3000`. If `USE_TLS` is set to `true` you should only map port `80` and `443`, and if `USE_TLS` is `false` only map port `3000`. Note that Negotiation Engine and Mongo DB ports are not exposed at all.
 
@@ -59,8 +61,8 @@ The container exposes ports `80`, `443` and `3000`. If `USE_TLS` is set to `true
 
 Configurable values depending on development/production deployment:
 
-- `SITE_ADDRESS`: Defaults to `localhost`. The hostname where the server is hosted only needs to be set when `USE_TLS="true"`.
-- `USE_TLS`: Defaults to `true`, set to `false` to disable automatic HTTPS, see [HTTPS](#HTTPS) for more details.
+- `SITE_ADDRESS`: Defaults to `localhost`. The hostname where the server is hosted only needs to be set when `USE_TLS` is `true`.
+- `USE_TLS`: Defaults to `true`. Set to `false` to disable automatic HTTPS, see [HTTPS](#HTTPS) for more details.
 - `NODE_ENV`: defaults to `production`, can optionally be set to `development` to display debug information such as stack traces.
 
 Optional environment variables which should be left alone:
