@@ -24,7 +24,17 @@ RUN         curl -1sLf 'https://dl.cloudsmith.io/public/caddy/stable/debian.deb.
 RUN         apt update
 RUN         apt install caddy
 
-# 3. Negotiation Engine dependencies
+# 3. Install Keycloak
+# -----------------------------------------------------------------------------
+WORKDIR     /keycloak
+RUN         apt install -y default-jdk
+RUN         curl -1sLf https://github.com/keycloak/keycloak/releases/download/17.0.1/keycloak-17.0.1.tar.gz | tee keycloak-17.0.1.tar.gz
+RUN         tar -xvzf keycloak-17.0.1.tar.gz
+RUN         mv keycloak-17.0.1 keycloak
+RUN         chmod +x keycloak/bin
+EXPOSE      8080
+
+# 4. Negotiation Engine dependencies
 # -----------------------------------------------------------------------------
 WORKDIR     /ne
 RUN         apt-get install -y python3 python3-pip
@@ -32,7 +42,7 @@ ARG         requirements="./NegotiationEngine/API PILOT 1/requirements.txt"
 COPY        ${requirements} .
 RUN         pip3 install -r requirements.txt
 
-# 4. Digiprime dependencies
+# 5. Digiprime dependencies
 # -----------------------------------------------------------------------------
 WORKDIR     /digiprime
 
@@ -44,35 +54,47 @@ COPY        ./Digiprime/package.json .
 COPY        ./Digiprime/package-lock.json .
 RUN         npm install
 
-# 5. Negotiation Engine
+# 6. Negotiation Engine
 # -----------------------------------------------------------------------------
 WORKDIR     /ne
 ARG         ne_path="./NegotiationEngine/API PILOT 1/"
 COPY        ${ne_path} .
 
-# 6. Digiprime source
+# 7. Digiprime source
 # -----------------------------------------------------------------------------
 WORKDIR     /digiprime
 COPY        ./Digiprime .
 EXPOSE      3000
 
-# 7. Utility to create contracts
+# 8. Utility to create contracts
 # -----------------------------------------------------------------------------
 WORKDIR     /util
 COPY        ./util .
 RUN         npm install
 
-# 8. Setup caddy
+# 9. Setup caddy
 # -----------------------------------------------------------------------------
 # Expose Caddy
 EXPOSE      80
 EXPOSE      443
 
-# 9. Setting up required environment variables.
+# 10. Setting up required environment variables.
 # -----------------------------------------------------------------------------
 # General
 ENV         SITE_ADDRESS="localhost"
-ENV         USE_TLS="true"
+ENV         USE_TLS="false"
+
+# Keycloak
+ENV         KEYCLOAK_HOST="http://localhost:3000/"
+ENV         KEYCLOAK_REALM="digiPrime"
+ENV         KEYCLOAK_CLIENT_ID="digiPrime-web"
+ENV         KEYCLOAK_CLIENT_SECRET="Hs2Oc9h4il883PusIr49DEvqsASonYTc"
+ENV         KEYCLOAK_ADMIN="admin"
+ENV         KEYCLOAK_ADMIN_PASSWORD="changeme"
+ENV         AUTH_KEYCLOAK="http://localhost:8080/"
+ENV         SITE_URL="http://localhost:3000/auth/callback"
+WORKDIR     /keycloak
+COPY        ./realm.json .
 
 # Digiprime
 ENV         DB_URL="mongodb://localhost:27017/offer-test"
@@ -82,12 +104,12 @@ ENV         CLOUDINARY_CLOUD_NAME=""
 ENV         CLOUDINARY_KEY=""
 ENV         CLOUDINARY_SECRET=""
 ENV         MAPBOX_TOKEN=""
-ENV         NODE_ENV="production"
+ENV         NODE_ENV="development"
 
 # Negotiation Engine
 ENV         DATABASE_URL="mongodb://localhost:27017/"
 
-# 10. Copy & Run start script
+# 11. Copy & Run start script
 # -----------------------------------------------------------------------------
 WORKDIR     /
 COPY        ./run.sh .

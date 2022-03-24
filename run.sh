@@ -4,6 +4,19 @@
 echo "Starting MongoDB"
 nohup mongod &
 
+# Start Keycloak
+echo "Starting Keycloak"
+cd /keycloak/keycloak/bin
+nohup ./kc.sh -Dkeycloak.profile.feature.upload_scripts=enabled start-dev &
+
+echo "Creating Realm"
+# Repeat this until the keycloak sever is up and running.
+while ! ./kcadm.sh config credentials --server http://localhost:8080 --realm master --user "${KEYCLOAK_ADMIN}" --password "${KEYCLOAK_ADMIN_PASSWORD}"
+do
+    sleep 5
+done
+./kcadm.sh create realms -f ../../realm.json
+
 # Create default contract
 cd /util
 npm run create_contract

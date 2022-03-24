@@ -14,39 +14,23 @@ docker build . -t digiprime     # Build container
 
 ## Run
 
-To run in production mode with HTTPS
+To instead run in development mode
 
 ```bash
-docker run -p 80:80 -p 443:443 \
-  --env MAPBOX_TOKEN=<your info> \
-  --env SECRET=<comma separated list of keys> \
-  --env CLOUDINARY_CLOUD_NAME=<your info> \
-  --env CLOUDINARY_KEY=<your info> \
-  --env CLOUDINARY_SECRET=<your info> \
-  --env CLOUDINARY_HOST_URL=<your info> \
-  --env SITE_ADDRESS=<your domain> \
-  digiprime
-```
-
-This will start a production server with automatic HTTPS on your `SITE_ADDRESS`, with automatic redirects to port `443`.
-
-To instead run in development mode without HTTPS
-
-```bash
-docker run -p 3000:3000 \
+docker run -p 3000:3000 -p 8080:8080 \
   --env MAPBOX_TOKEN=<your token> \
   --env CLOUDINARY_CLOUD_NAME=<your info> \
   --env CLOUDINARY_KEY=<your info> \
   --env CLOUDINARY_SECRET=<your info> \
   --env CLOUDINARY_HOST_URL=<your info> \
-  --env NODE_ENV="development" \
-  --env USE_TLS="false" \
+  --env KEYCLOAK_ADMIN="admin" \
+  --env KEYCLOAK_ADMIN_PASSWORD="changeme" \
   digiprime
 ```
 
-This starts the Digiprime server on [`http://localhost:3000`](http://localhost:3000). If using user supplied images are not of interest, the `CLOUDINARY_*` environment variables can be unset. `NODE_ENV` set to `development` enables stack traces on error pages.
+Or `norlen/digiprime:latest` for the pre-build image.
 
-The container exposes ports `80`, `443` and `3000`. If `USE_TLS` is set to `true` you should only map port `80` and `443`, and if `USE_TLS` is `false` only map port `3000`. Note that Negotiation Engine and Mongo DB ports are not exposed at all.
+This starts the Digiprime server on [`http://localhost:3000`](http://localhost:3000). If using user supplied images are not of interest, the `CLOUDINARY_*` environment variables can be unset.
 
 ### Environment variables
 
