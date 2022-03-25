@@ -9,22 +9,26 @@ echo "Starting Keycloak"
 cd /keycloak/keycloak/bin
 nohup ./kc.sh -Dkeycloak.profile.feature.upload_scripts=enabled start-dev &
 
-echo "Creating Realm"
-# Repeat this until the keycloak sever is up and running.
-while ! ./kcadm.sh config credentials --server http://localhost:8080 --realm master --user "${KEYCLOAK_ADMIN}" --password "${KEYCLOAK_ADMIN_PASSWORD}"
-do
-    sleep 5
-done
-./kcadm.sh create realms -f ../../realm.json
 
-# Create default contract
-cd /util
-npm run create_contract
+if [ "${FIRST_STARTUP}" == "true" ]
+then
+    echo "Creating Realm"
+    # Repeat this until the keycloak sever is up and running.
+    while ! ./kcadm.sh config credentials --server http://localhost:8080 --realm master --user "${KEYCLOAK_ADMIN}" --password "${KEYCLOAK_ADMIN_PASSWORD}"
+    do
+        sleep 5
+    done
+    ./kcadm.sh create realms -f ../../realm.json
 
-# Start Negotiation Engine
-echo "Starting Negotiation Engine..."
-cd /ne
-nohup python3 -m flask run --host=0.0.0.0 &
+    # Create default contract
+    cd /util
+    npm run create_contract
+
+    # Start Negotiation Engine
+    echo "Starting Negotiation Engine..."
+    cd /ne
+    nohup python3 -m flask run --host=0.0.0.0 &
+fi
 
 if [ "${USE_TLS}" == "true" ]
 then

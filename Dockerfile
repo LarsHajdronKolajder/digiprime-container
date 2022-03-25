@@ -106,6 +106,9 @@ ENV         NODE_ENV="development"
 # Negotiation Engine
 ENV         DATABASE_URL="mongodb://localhost:27017/"
 
+# Used for first startup to create the initial data required.
+ENV         FIRST_STARTUP="true"
+
 # 11. Copy & Run start script
 # -----------------------------------------------------------------------------
 # Copy over Keycloak Realm data.

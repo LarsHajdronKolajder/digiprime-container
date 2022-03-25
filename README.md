@@ -51,6 +51,7 @@ docker run -p 3000:3000 -p 8080:8080 \
   --env CLOUDINARY_SECRET=<your info> \
   --env KEYCLOAK_ADMIN="admin" \
   --env KEYCLOAK_ADMIN_PASSWORD="changeme" \
+  --env FIRST_STARTUP="true" \
   -v mongodb_data:/data/db \
   -v keycloak_data:/keycloak/keycloak/data \
   digiprime
@@ -68,8 +69,9 @@ This starts the Digiprime server on [`http://localhost:3000`](http://localhost:3
 - `CLOUDINARY_KEY`: [Cloudinary](https://cloudinary.com/) API key.
 - `CLOUDINARY_SECRET`: [Cloudinary](https://cloudinary.com/) secret.
 
-Configurable values depending on development/production deployment:
+Configurable values:
 
+- `FIRST_STARTUP`: Set up default realm and contract template, default: `true`. Should be set to `false` if data is persisted AND this is not the first run.
 - `NODE_ENV`: defaults to `development`, can optionally be set to `production` to hide debug information such as stack traces.
 - `KEYCLOAK_ADMIN`: Keycloak admin username, default: `admin`.
 - `KEYCLOAK_ADMIN_PASSWORD`: Keycloak admin password, default: `changeme`.
