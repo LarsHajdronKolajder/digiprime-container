@@ -58,6 +58,7 @@ docker run -p 3000:3000 -p 8080:8080 \
 ```
 
 This starts the Digiprime server on [`http://localhost:3000`](http://localhost:3000).
+Set `FIRST_STARTUP` to `false` if this is not the first time running with the same mounted volumes.
 
 ### Environment variables
 
