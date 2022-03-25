@@ -37,9 +37,6 @@ docker run -p 3000:3000 -p 8080:8080 \
 
 Runs Digiprime which is avaiable at [`http://localhost:3000`](http://localhost:3000).
 
-A default keycloak admin user `admin/changeme` (username/password) is created
-and is available at [`http://localhost:8080`](http://localhost:8080).
-
 To instead run a more complete build with image uploading support, data
 persistance, and a custom keycloak admin user run
 
@@ -59,6 +56,9 @@ docker run -p 3000:3000 -p 8080:8080 \
 
 This starts the Digiprime server on [`http://localhost:3000`](http://localhost:3000).
 Set `FIRST_STARTUP` to `false` if this is not the first time running with the same mounted volumes.
+
+Managing keycloak can be done by visiting [`http://localhost:8080`](http://localhost:8080) and using
+the admin credentials
 
 ### Environment variables
 
