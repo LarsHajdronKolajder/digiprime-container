@@ -85,16 +85,13 @@ ENV         SITE_ADDRESS="localhost"
 ENV         USE_TLS="false"
 
 # Keycloak
-ENV         KEYCLOAK_HOST="http://localhost:3000/"
 ENV         KEYCLOAK_REALM="digiPrime"
 ENV         KEYCLOAK_CLIENT_ID="digiPrime-web"
 ENV         KEYCLOAK_CLIENT_SECRET="Hs2Oc9h4il883PusIr49DEvqsASonYTc"
 ENV         KEYCLOAK_ADMIN="admin"
 ENV         KEYCLOAK_ADMIN_PASSWORD="changeme"
-ENV         AUTH_KEYCLOAK="http://localhost:8080/"
-ENV         SITE_URL="http://localhost:3000/auth/callback"
-WORKDIR     /keycloak
-COPY        ./realm.json .
+ENV         KEYCLOAK_AUTH_SERVER_URL="http://localhost:8080/"
+ENV         KEYCLOAK_CALLBACK_URL="http://localhost:3000/auth/callback"
 
 # Digiprime
 ENV         DB_URL="mongodb://localhost:27017/offer-test"
@@ -111,6 +108,11 @@ ENV         DATABASE_URL="mongodb://localhost:27017/"
 
 # 11. Copy & Run start script
 # -----------------------------------------------------------------------------
+# Copy over Keycloak Realm data.
+WORKDIR     /keycloak
+COPY        ./realm.json .
+
+# Copy start script.
 WORKDIR     /
 COPY        ./run.sh .
 RUN         chmod +x ./run.sh
