@@ -72,6 +72,7 @@ the admin credentials
 
 Configurable values:
 
+- `BASE_URL`: If the application is served on a subpath, this controls which one, default: `""`.
 - `FIRST_STARTUP`: Set up default realm and contract template, default: `true`. Should be set to `false` if data is persisted AND this is not the first run.
 - `NODE_ENV`: defaults to `development`, can optionally be set to `production` to hide debug information such as stack traces.
 - `KEYCLOAK_ADMIN`: Keycloak admin username, default: `admin`.

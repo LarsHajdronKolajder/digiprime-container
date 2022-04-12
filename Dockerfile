@@ -83,6 +83,7 @@ EXPOSE      443
 # General
 ENV         SITE_ADDRESS="localhost"
 ENV         USE_TLS="false"
+ENV         BASE_URL=""
 
 # Keycloak
 ENV         KEYCLOAK_REALM="digiPrime"
