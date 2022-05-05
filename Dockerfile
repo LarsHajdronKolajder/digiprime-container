@@ -15,25 +15,6 @@ RUN         apt-get update
 RUN         apt-get install -y mongodb-org
 RUN         mkdir -p /data/db
 
-# 2. Install Caddy
-# https://caddyserver.com/docs/install#debian-ubuntu-raspbian
-# -----------------------------------------------------------------------------
-RUN         apt install -y debian-keyring debian-archive-keyring apt-transport-https
-RUN         curl -1sLf 'https://dl.cloudsmith.io/public/caddy/stable/gpg.key' | tee /etc/apt/trusted.gpg.d/caddy-stable.asc
-RUN         curl -1sLf 'https://dl.cloudsmith.io/public/caddy/stable/debian.deb.txt' | tee /etc/apt/sources.list.d/caddy-stable.list
-RUN         apt update
-RUN         apt install caddy
-
-# 3. Install Keycloak
-# -----------------------------------------------------------------------------
-WORKDIR     /keycloak
-RUN         apt install -y default-jdk
-RUN         curl -1sLf https://github.com/keycloak/keycloak/releases/download/17.0.1/keycloak-17.0.1.tar.gz | tee keycloak-17.0.1.tar.gz
-RUN         tar -xvzf keycloak-17.0.1.tar.gz
-RUN         mv keycloak-17.0.1 keycloak
-RUN         chmod +x keycloak/bin
-EXPOSE      8080
-
 # 4. Negotiation Engine dependencies
 # -----------------------------------------------------------------------------
 WORKDIR     /ne
@@ -66,33 +47,12 @@ WORKDIR     /digiprime
 COPY        ./Digiprime .
 EXPOSE      3000
 
-# 8. Utility to create contracts
-# -----------------------------------------------------------------------------
-WORKDIR     /util
-COPY        ./util .
-RUN         npm install
-
-# 9. Setup caddy
-# -----------------------------------------------------------------------------
-# Expose Caddy
-EXPOSE      80
-EXPOSE      443
-
 # 10. Setting up required environment variables.
 # -----------------------------------------------------------------------------
 # General
 ENV         SITE_ADDRESS="localhost"
 ENV         USE_TLS="false"
 ENV         BASE_URL=""
-
-# Keycloak
-ENV         KEYCLOAK_REALM="digiPrime"
-ENV         KEYCLOAK_CLIENT_ID="digiPrime-web"
-ENV         KEYCLOAK_CLIENT_SECRET="Hs2Oc9h4il883PusIr49DEvqsASonYTc"
-ENV         KEYCLOAK_ADMIN="admin"
-ENV         KEYCLOAK_ADMIN_PASSWORD="changeme"
-ENV         KEYCLOAK_AUTH_SERVER_URL="http://localhost:8080/"
-ENV         KEYCLOAK_CALLBACK_URL="http://localhost:3000/auth/callback"
 
 # Digiprime
 ENV         DB_URL="mongodb://localhost:27017/offer-test"
@@ -107,15 +67,8 @@ ENV         NODE_ENV="development"
 # Negotiation Engine
 ENV         DATABASE_URL="mongodb://localhost:27017/"
 
-# Used for first startup to create the initial data required.
-ENV         FIRST_STARTUP="true"
-
 # 11. Copy & Run start script
 # -----------------------------------------------------------------------------
-# Copy over Keycloak Realm data.
-WORKDIR     /keycloak
-COPY        ./realm.json .
-
 # Copy start script.
 WORKDIR     /
 COPY        ./run.sh .
