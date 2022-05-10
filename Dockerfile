@@ -52,7 +52,7 @@ EXPOSE      3000
 # General
 ENV         SITE_ADDRESS="localhost"
 ENV         USE_TLS="false"
-ENV         BASE_URL=""
+ENV         BASE_URL="https://digiprime-mvp.red.extrasys.it/orc/"
 
 # Digiprime
 ENV         DB_URL="mongodb://localhost:27017/offer-test"
@@ -63,6 +63,7 @@ ENV         CLOUDINARY_KEY=""
 ENV         CLOUDINARY_SECRET=""
 ENV         MAPBOX_TOKEN=""
 ENV         NODE_ENV="development"
+ENV         AUTH_BASE_URL=""
 
 # Negotiation Engine
 ENV         DATABASE_URL="mongodb://localhost:27017/"
