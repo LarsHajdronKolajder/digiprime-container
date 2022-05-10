@@ -30,7 +30,7 @@ builds are not supported. To use the pre-built image replace `digiprime` with
 The most basic way to run is
 
 ```bash
-docker run -p 3000:3000 -p 8080:8080 \
+docker run -p 3000:3000 \
   --env MAPBOX_TOKEN=<your token> \
   digiprime
 ```
@@ -41,24 +41,16 @@ To instead run a more complete build with image uploading support, data
 persistance, and a custom keycloak admin user run
 
 ```bash
-docker run -p 3000:3000 -p 8080:8080 \
+docker run -p 3000:3000 \
   --env MAPBOX_TOKEN=<your token> \
   --env CLOUDINARY_CLOUD_NAME=<your info> \
   --env CLOUDINARY_KEY=<your info> \
   --env CLOUDINARY_SECRET=<your info> \
-  --env KEYCLOAK_ADMIN="admin" \
-  --env KEYCLOAK_ADMIN_PASSWORD="changeme" \
-  --env FIRST_STARTUP="true" \
   -v mongodb_data:/data/db \
-  -v keycloak_data:/keycloak/keycloak/data \
   digiprime
 ```
 
 This starts the Digiprime server on [`http://localhost:3000`](http://localhost:3000).
-Set `FIRST_STARTUP` to `false` if this is not the first time running with the same mounted volumes.
-
-Managing keycloak can be done by visiting [`http://localhost:8080`](http://localhost:8080) and using
-the admin credentials
 
 ### Environment variables
 
@@ -73,10 +65,8 @@ the admin credentials
 Configurable values:
 
 - `BASE_URL`: If the application is served on a subpath, this controls which one, default: `""`.
-- `FIRST_STARTUP`: Set up default realm and contract template, default: `true`. Should be set to `false` if data is persisted AND this is not the first run.
 - `NODE_ENV`: defaults to `development`, can optionally be set to `production` to hide debug information such as stack traces.
-- `KEYCLOAK_ADMIN`: Keycloak admin username, default: `admin`.
-- `KEYCLOAK_ADMIN_PASSWORD`: Keycloak admin password, default: `changeme`.
+- `AUTH_BASE_URL`: default path to the auth server.
 
 For completeness, the other environent variables are shown here but they should
 not be changed.
@@ -84,19 +74,12 @@ not be changed.
 - `DB_URL`: Database URL for Digiprime, can be set to use another database.
 - `PORT`: Port to launch Digiprime. However, the image only exposes port `3000` so leave this alone.
 - `DATABASE_URL`: Database URL for Negotiation Engine, can be set to use another database.
-- `KEYCLOAK_REALM`: Keycloak realm to use. This is automatically set up.
-- `KEYCLOAK_CLIENT_ID`: Keycloak realm client to use. This is automatically set up.
-- `KEYCLOAK_CLIENT_SECRET`: Keycloak realm client secret. This is automatically set up.
-- `KEYCLOAK_AUTH_SERVER_URL`: Keycloak server URL, default: `http://localhost:8080/`.
-- `KEYCLOAK_CALLBACK_URL`: Keycloak login callback handler, default: `http://localhost:3000/auth/callback`.
 
 ### Persisting data
 
 To keep data between runs [docker volumes](https://docs.docker.com/storage/volumes/) should be used.
 
 To persist MongoDB mount `/data/db` which is where Mongo stores the data.
-
-To persist Keycloak data mount `/keycloak/keycloak/data`. This requires the usage of the same admin username/password at all times.
 
 ## License
 
