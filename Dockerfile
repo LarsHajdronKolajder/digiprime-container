@@ -64,6 +64,7 @@ ENV         CLOUDINARY_SECRET=""
 ENV         MAPBOX_TOKEN=""
 ENV         NODE_ENV="development"
 ENV         AUTH_BASE_URL="https://digiprime-mvp.red.extrasys.it/orc/"
+ENV         DISMITTED_OBJECT="https://automotive.digiprime-mvp.red.extrasys.it/orc/data/edm?edmEntityName=dismittedObject"
 
 # Negotiation Engine
 ENV         DATABASE_URL="mongodb://localhost:27017/"
