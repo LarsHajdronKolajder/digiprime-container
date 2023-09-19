@@ -1,6 +1,6 @@
 [submodule "Digiprime"]
 	path = Digiprime
-	url = https://github.com/norlen/Digiprime
+	url = https://github.com/EricChiquitoG/Digiprime
 [submodule "NegotiationEngine"]
 	path = NegotiationEngine
-	url = https://github.com/norlen/NegotiationEngine
+	url = https://github.com/EricChiquitoG/NegotiationEngine
