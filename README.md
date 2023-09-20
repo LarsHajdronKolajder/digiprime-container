@@ -1,3 +1,6 @@
+
+# Documentation for this repo is not valid as it refers to parent repo
+
 Builds a container containing [Digiprime](https://github.com/norlen/Digiprime)
 and [Negotiation Engine](https://github.com/norlen/NegotiationEngine).
 
