@@ -3,4 +3,4 @@
 	url = https://github.com/EricChiquitoG/Digiprime
 [submodule "NegotiationEngine"]
 	path = NegotiationEngine
-	url = https://github.com/EricChiquitoG/NegotiationEngine
+	url = https://github.com/EricChiquitoG/NegotiationEngine/tree/Norlen_Integration
