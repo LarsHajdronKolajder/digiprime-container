@@ -1,5 +1,5 @@
 
-# WARNING: Documentation for this repo is not valid as it refers to parent repo
+# WARNING: DDocumentation may be outdated from parent repo
 
 Builds a container containing [Digiprime](https://github.com/norlen/Digiprime)
 and [Negotiation Engine](https://github.com/norlen/NegotiationEngine).
@@ -49,9 +49,11 @@ docker run -p 3000:3000 \
   --env CLOUDINARY_CLOUD_NAME=<your info> \
   --env CLOUDINARY_KEY=<your info> \
   --env CLOUDINARY_SECRET=<your info> \
+  --env APIKEY=<project_api_key> \
   -v mongodb_data:/data/db \
   digiprime
 ```
+Get in contact with me to get the keys to run a proper version.
 
 This starts the Digiprime server on [`http://localhost:3000`](http://localhost:3000).
 
