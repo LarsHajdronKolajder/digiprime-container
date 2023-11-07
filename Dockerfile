@@ -62,9 +62,12 @@ ENV         CLOUDINARY_CLOUD_NAME=""
 ENV         CLOUDINARY_KEY=""
 ENV         CLOUDINARY_SECRET=""
 ENV         MAPBOX_TOKEN=""
+ENV         APIKEY=""
 ENV         NODE_ENV="development"
 ENV         AUTH_BASE_URL="https://digiprime-mvp.red.extrasys.it/orc/"
 ENV         DISMITTED_OBJECT="https://automotive.digiprime-mvp.red.extrasys.it/orc/data/edm?edmEntityName=dismittedObject"
+ENV         AUTO_URL='https://automotive.digiprime-mvp.red.extrasys.it/orc/data/edm'
+ENV         BATTERY_URL='https://battery.digiprime-mvp.red.extrasys.it/orc/data/edm'
 
 # Negotiation Engine
 ENV         DATABASE_URL="mongodb://localhost:27017/"
